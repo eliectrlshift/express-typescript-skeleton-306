@@ -1,0 +1,20 @@
+{
+  "directory": [
+    "./src/application",
+    "./src/domain",
+    "./src/infrastructure",
+    "./src/presentation"
+  ],
+  "exclude": [
+    ".turbo",
+    "logs",
+    "node_modules",
+    "dist",
+    "src/infrastructure/shared/persistence/prisma",
+    "src/__tests__"
+  ],
+  "delete": true,
+  "singleQuotes": true,
+  "noHeader": false,
+  "location": "all"
+}

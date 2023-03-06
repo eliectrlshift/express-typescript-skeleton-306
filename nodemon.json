@@ -1,0 +1,6 @@
+{
+  "watch": ["src"],
+  "ext": "ts,json,yml,hbs",
+  "ignore": ["dist", "node_modules", "src/__tests__"],
+  "exec": "node --inspect=0.0.0.0:9229 -r ts-node/register -r tsconfig-paths/register ./src/index.ts"
+}

@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Node.js",
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  },
+  "compilerOptions": {
+    "composite": false,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "inlineSources": false,
+    "preserveWatchOutput": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "baseUrl": "./",
+    "outDir": "./dist",
+    "rootDir": "./",
+    "paths": {
+      "@application/*": ["src/application/*"],
+      "@domain/*": ["src/domain/*"],
+      "@infrastructure/*": ["src/infrastructure/*"],
+      "@presentation/*": ["src/presentation/*"],
+      "@src/*": ["src/*"]
+    },
+    "typeRoots": ["../../node_modules/@types", "node_modules/@types", "types"],
+    "allowJs": true,
+    "declaration": false,
+    "lib": ["es2019", "es2020", "es2021", "esnext", "dom"],
+    "module": "commonjs",
+    "noEmit": false,
+    "sourceMap": true,
+    "target": "es2019",
+    "isolatedModules": false,
+    "declarationMap": false,
+    "jsx": "react",
+    "moduleResolution": "node",
+    "listEmittedFiles": false,
+    "listFiles": false,
+    "resolveJsonModule": true,
+    "traceResolution": false,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "pretty": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": [".eslintrc.js", ".prettierc.js"],
+  "compileOnSave": false
+}

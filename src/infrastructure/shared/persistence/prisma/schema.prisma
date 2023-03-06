@@ -1,0 +1,260 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
+}
+
+generator tsed {
+  provider      = "tsed-prisma"
+  binaryTargets = ["native"]
+  //output             = "./generated/tsed"
+  //emitTranspiledCode = false
+}
+
+enum Gender {
+  UNDEFINED
+  MALE
+  FEMALE
+}
+
+enum Role {
+  ADMIN
+  USER
+  AUDITOR
+}
+
+model User {
+  id                    Int       @id @default(autoincrement())
+  uuid                  String    @unique @db.VarChar(1000)
+  gender                Gender    @default(UNDEFINED)
+  firstName             String    @db.VarChar(255)
+  lastName              String    @db.VarChar(500)
+  birthDate             DateTime  @db.Date
+  username              String    @unique @db.VarChar(100)
+  email                 String    @unique @db.VarChar(255)
+  phoneNumber           String    @db.VarChar(100)
+  address               String    @db.VarChar(1500)
+  profilePicUrl         String    @db.VarChar(2500)
+  passwordHash          String    @db.VarChar(100)
+  verified              Boolean   @default(false)
+  enabled               Boolean   @default(true)
+  googleOIDC            Boolean   @default(false)
+  roles                 Role[]    @default([USER])
+  forgotPasswordToken   String?   @db.VarChar(1500)
+  createdAt             DateTime? @default(now()) @db.Timestamptz(3)
+  createdBy             String?   @db.VarChar(255)
+  updatedAt             DateTime? @default(now()) @updatedAt @db.Timestamptz(3)
+  updatedBy             String?   @db.VarChar(255)
+  deletedAt             DateTime? @db.Timestamptz(3)
+  deletedBy             String?   @db.VarChar(255)
+}
+
+model Session {
+  id               Int       @id @default(autoincrement())
+  uuid             String    @unique @db.VarChar(1000)
+  userUuid         String    @db.VarChar(1000)
+  userData         Json      @db.JsonB
+  refreshTokenHash String    @db.VarChar(5000)
+  revokedAt        DateTime? @db.Timestamptz(3)
+  revokedBy        String?   @db.VarChar(255)
+  revocationReason String?   @db.VarChar(1000)
+  expiresAt        DateTime  @db.Timestamptz(3)
+  createdAt        DateTime? @default(now()) @db.Timestamptz(3)
+  createdBy        String?   @db.VarChar(255)
+  updatedAt        DateTime? @default(now()) @updatedAt @db.Timestamptz(3)
+  updatedBy        String?   @db.VarChar(255)
+  deletedAt        DateTime? @db.Timestamptz(3)
+  deletedBy        String?   @db.VarChar(255)
+}
+
+model Project {
+  id                Int             @id @default(autoincrement())
+  uuid              String          @unique @db.VarChar(1000)
+  publicName        String          @db.VarChar(255)
+  privateName       String          @db.VarChar(255)
+  slug              String          @db.VarChar(255)
+  description       String          @db.VarChar(500)
+  projectDrive      ProjectDrive?
+  createdAt         DateTime?       @default(now()) @db.Timestamptz(3)
+  createdBy         String?         @db.VarChar(255)
+  updatedAt         DateTime?       @default(now()) @updatedAt @db.Timestamptz(3)
+  updatedBy         String?         @db.VarChar(255)
+  deletedAt         DateTime?       @db.Timestamptz(3)
+  deletedBy         String?         @db.VarChar(255)
+}
+
+model ProjectGithub {
+  id                          Int                   @id @default(autoincrement())
+  uuid                        String                @unique                             @db.VarChar(1000)
+  repositoryid                Int                   @unique                             @db.Integer
+  nodeid                      String                @db.VarChar(255)
+  name                        String                @unique                             @db.VarChar(255)
+  fullName                    String                @unique                             @db.VarChar(255)
+  private                     Boolean               @db.Boolean
+  htmlUrl                     String                @unique                             @db.VarChar(255)
+  description                 String?               @db.VarChar(255)
+  fork                        Boolean               @db.Boolean
+  url                         String                @unique                             @db.VarChar(255)
+  forksUrl                    String                @unique                             @db.VarChar(255)
+  keysUrl                     String                @unique                             @db.VarChar(255)
+  collaboratorsUrl            String                @unique                             @db.VarChar(255)
+  teamsUrl                    String                @unique                             @db.VarChar(255)
+  hooksUrl                    String                @unique                             @db.VarChar(255)
+  issueEventsUrl              String                @unique                             @db.VarChar(255)
+  eventsUrl                   String                @unique                             @db.VarChar(255)
+  assigneesUrl                String                @unique                             @db.VarChar(255)
+  branchesUrl                 String                @unique                             @db.VarChar(255)
+  tagsUrl                     String                @unique                             @db.VarChar(255)
+  blobsUrl                    String                @unique                             @db.VarChar(255)
+  gitTagsUrl                  String                @unique                             @db.VarChar(255)
+  gitRefsUrl                  String                @unique                             @db.VarChar(255)
+  treesUrl                    String                @unique                             @db.VarChar(255)
+  statusesUrl                 String                @unique                             @db.VarChar(255)
+  languagesUrl                String                @unique                             @db.VarChar(255)
+  stargazersUrl               String                @unique                             @db.VarChar(255)
+  contributorsUrl             String                @unique                             @db.VarChar(255)
+  subscribersUrl              String                @unique                             @db.VarChar(255)
+  subscriptionUrl             String                @unique                             @db.VarChar(255)
+  commitsUrl                  String                @unique                             @db.VarChar(255)
+  gitCommitsUrl               String                @unique                             @db.VarChar(255)
+  commentsUrl                 String                @unique                             @db.VarChar(255)
+  issueCommentUrl             String                @unique                             @db.VarChar(255)
+  contentsUrl                 String                @unique                             @db.VarChar(255)
+  compareUrl                  String                @unique                             @db.VarChar(255)
+  mergesUrl                   String                @unique                             @db.VarChar(255)
+  archiveUrl                  String                @unique                             @db.VarChar(255)
+  downloadsUrl                String                @unique                             @db.VarChar(255)
+  issuesUrl                   String                @unique                             @db.VarChar(255)
+  pullsUrl                    String                @unique                             @db.VarChar(255)
+  milestonesUrl               String                @unique                             @db.VarChar(255)
+  notificationsUrl            String                @unique                             @db.VarChar(255)
+  labelsUrl                   String                @unique                             @db.VarChar(255)
+  releasesUrl                 String                @unique                             @db.VarChar(255)
+  deploymentsUrl              String                @unique                             @db.VarChar(255)
+  gitUrl                      String?               @unique                             @db.VarChar(255)
+  sshUrl                      String?               @unique                             @db.VarChar(255)
+  cloneUrl                    String?               @unique                             @db.VarChar(255)
+  svnUrl                      String?               @unique                             @db.VarChar(255)
+  homepage                    String?               @db.VarChar(255)
+  size                        Int?                  @db.Integer
+  stargazersCount             Int?                  @db.Integer
+  watchersCount               Int?                  @db.Integer
+  language                    String?               @db.VarChar(255)
+  hasIssues                   Boolean?              @db.Boolean
+  hasProjects                 Boolean?              @db.Boolean
+  hasDownloads                Boolean?              @db.Boolean
+  hasWiki                     Boolean?              @db.Boolean
+  hasPages                    Boolean?              @db.Boolean
+  hasDiscussions              Boolean?              @db.Boolean
+  forksCount                  Int?                  @db.Integer
+  mirrorUrl                   String?               @db.VarChar(255)
+  archived                    Boolean?              @db.Boolean
+  disabled                    Boolean?              @db.Boolean
+  openIssuesCount             Int?                  @db.Integer
+  license                     String?               @db.VarChar(255)
+  allowForking                Boolean?              @db.Boolean
+  isTemplate                  Boolean?              @db.Boolean
+  webCommitSignoffRequired    Boolean?              @db.Boolean
+  visibility                  String?               @db.VarChar(255)
+  forks                       Int?                  @db.Integer
+  openIssues                  Int?                  @db.Integer
+  watchers                    Int?                  @db.Integer
+  defaultBranch               String?               @db.VarChar(255)
+  permissionsAdmin            Boolean?              @db.Boolean
+  permissionsMaintain         Boolean?              @db.Boolean
+  permissionsPush             Boolean?              @db.Boolean
+  permissionsTriage           Boolean?              @db.Boolean
+  permissionsPull             Boolean?              @db.Boolean
+  repositoryCreatedAt         DateTime?             @db.Timestamptz(3)
+  repositoryUpdatedAt         DateTime?             @db.Timestamptz(3)
+  repositoryPushedAt          DateTime?             @db.Timestamptz(3)
+  createdAt                   DateTime?             @default(now())                     @db.Timestamptz(3)
+  createdBy                   String?               @db.VarChar(255)
+  updatedAt                   DateTime?             @default(now())                     @updatedAt                    @db.Timestamptz(3)
+  updatedBy                   String?               @db.VarChar(255)
+  deletedAt                   DateTime?             @db.Timestamptz(3)
+  deletedBy                   String?               @db.VarChar(255)
+}
+
+model ProjectSlack {
+  id                        Int                   @id @default(autoincrement())
+  uuid                      String                @unique                               @db.VarChar(1000)
+  channelId                 String?               @unique                               @db.VarChar(255)
+  contextTeamId             String?               @db.VarChar(255)
+  conversationHostId        String?               @db.VarChar(255)
+  created                   Int?                  @db.Integer
+  creator                   String?               @db.VarChar(255)
+  internalTeamIds           String[]         
+  isArchived                Boolean?              @db.Boolean
+  isChannel                 Boolean?              @db.Boolean
+  isExtShared               Boolean?              @db.Boolean
+  isGeneral                 Boolean?              @db.Boolean
+  isGlobalShared            Boolean?              @db.Boolean
+  isGroup                   Boolean?              @db.Boolean
+  isIm                      Boolean?              @db.Boolean
+  isMember                  Boolean?              @db.Boolean
+  isMoved                   Int?                  @db.Integer
+  isMpim                    Boolean?              @db.Boolean
+  isOrgDefault              Boolean?              @db.Boolean
+  isOrgMandatory            Boolean?              @db.Boolean
+  isOrgShared               Boolean?              @db.Boolean
+  isPendingExtShared        Boolean?              @db.Boolean
+  isPrivate                 Boolean?              @db.Boolean
+  isShared                  Boolean?              @db.Boolean
+  isUserDeleted             Boolean?              @db.Boolean
+  name                      String?               @unique                               @db.VarChar(255)
+  nameNormalized            String?               @unique                               @db.VarChar(255)
+  numMembers                Int?                  @db.Integer
+  pendingConnectedTeamIds   String[]         
+  pendingShared             String[]         
+  previousNames             String[]         
+  priority                  Int?                  @db.Integer
+  purposeCreator            String?               @db.VarChar(255)
+  purposeLastSet            Int?                  @db.Integer
+  purposeValue              String?               @db.VarChar(255)
+  topicCreator              String?               @db.VarChar(255)
+  topicLastSet              Int?                  @db.Integer
+  topicValue                String?               @db.VarChar(255)
+  unlinked                  Int?                  @db.Integer
+  user                      String?               @db.VarChar(255)
+  createdAt                 DateTime?             @default(now())                       @db.Timestamptz(3)
+  createdBy                 String?               @db.VarChar(255)
+  updatedAt                 DateTime?             @default(now())                       @updatedAt                    @db.Timestamptz(3)
+  updatedBy                 String?               @db.VarChar(255)
+  deletedAt                 DateTime?             @db.Timestamptz(3)
+  deletedBy                 String?               @db.VarChar(255)
+}
+
+model ProjectDrive {
+  id                        Int                   @id                                   @default(autoincrement())
+  uuid                      String                @unique                               @db.VarChar(1000)
+  folderId                  String?               @unique                               @db.VarChar(500)
+  name                      String?               @unique                               @db.VarChar(500)
+  url                       String?               @db.VarChar(500)
+  project                   Project?              @relation(fields: [projectUid], references: [uuid])
+  projectUid                String?               @unique
+  createdAt                 DateTime?             @default(now())                       @db.Timestamptz(3)
+  createdBy                 String?               @db.VarChar(255)
+  updatedAt                 DateTime?             @default(now())                       @updatedAt                    @db.Timestamptz(3)
+  updatedBy                 String?               @db.VarChar(255)
+  deletedAt                 DateTime?             @db.Timestamptz(3)
+  deletedBy                 String?               @db.VarChar(255)
+}
+
+model Bookmark {
+  id                        Int                   @id @default(autoincrement())
+  uuid                      String                @unique                               @db.VarChar(1000)
+  name                      String                @unique                               @db.VarChar(1000)
+  description               String?               @db.VarChar(1000)
+  url                       String                @db.VarChar(500)
+  createdAt                 DateTime?             @default(now())                       @db.Timestamptz(3)
+  createdBy                 String?               @db.VarChar(255)
+  updatedAt                 DateTime?             @default(now())                       @updatedAt                    @db.Timestamptz(3)
+  updatedBy                 String?               @db.VarChar(255)
+  deletedAt                 DateTime?             @db.Timestamptz(3)
+  deletedBy                 String?               @db.VarChar(255)
+}

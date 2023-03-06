@@ -1,0 +1,17 @@
+{
+	"name": "project",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "project",
+	"workspaceFolder": "/workspace",
+	"features": {
+		"ghcr.io/devcontainers-contrib/features/prisma:1": {}
+	},
+	"extensions": [
+	  "dbaeumer.vscode-eslint",
+	  "esbenp.prettier-vscode",
+	  "isudox.vscode-jetbrains-keybindings"
+	],
+	"forwardPorts": [8000, 3000, 3001, 5432],
+	"postCreateCommand": "./.devcontainer/postCreateCommand.sh",
+	"remoteUser": "node"
+}
